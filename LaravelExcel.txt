@@ -1,0 +1,52 @@
+﻿https://github.com/Maatwebsite/Laravel-Excel
+composer.json
+
+"maatwebsite/excel": "~2.1.0"
+
+
+use Maatwebsite\Excel\Facades\Excel;
+
+
+Import
+$excel = [];
+Excel::load(Input::file('file'), function ($reader) use (&$excel) {
+	$objExcel = $reader->getExcel();
+    $sheet = $objExcel->getSheet(0);
+    $highestRow = $sheet->getHighestRow();
+    $highestColumn = $sheet->getHighestColumn();
+
+    //  Loop through each row of the worksheet in turn
+    //lặp từ dòng 3 trong file excel
+    for ($row = 3; $row <= $highestRow; $row++)
+    {
+        //  Read a row of data into an array
+        $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row,
+            NULL, TRUE, FALSE);
+        $excel[] = $rowData[0];
+    }
+
+});	
+return $excel;
+
+
+
+
+Export
+$export = Products::all();
+return Excel::create('namefile', function($excel) use ($export) {
+    $excel->sheet('nameSheet', function($sheet) use ($export)
+    {
+        $sheet->fromArray($export, null, 'A1', false, false);
+        $headings = array('Lớp', 'Tên môn học', 'Thứ', 'Tiết bắt đầu','Số Tiết', 'Tuần học thực tế', 'Phòng học','Giảng viên');
+        $sheet->prependRow(1, $headings);
+    });
+})->download('xlsx');
+
+
+
+
+
+
+
+
+
