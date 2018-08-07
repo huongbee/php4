@@ -44,7 +44,45 @@ protected $routeMiddleware = [
     {
         return [];
     }
-    
+6. app/jwt.php
+
+'providers' => [
+        'user' => 'Tymon\JWTAuth\Providers\User\EloquentUserAdapter',
+
+        /*
+        |--------------------------------------------------------------------------
+        | JWT Provider
+        |--------------------------------------------------------------------------
+        |
+        | Specify the provider that is used to create and decode the tokens.
+        |
+        */
+
+        'jwt' => 'Tymon\JWTAuth\Providers\JWT\Namshi',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Authentication Provider
+        |--------------------------------------------------------------------------
+        |
+        | Specify the provider that is used to authenticate users.
+        |
+        */
+
+        'auth' => Tymon\JWTAuth\Providers\Auth\Illuminate::class,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Storage Provider
+        |--------------------------------------------------------------------------
+        |
+        | Specify the provider that is used to store tokens in the blacklist.
+        |
+        */
+
+        'storage' => Tymon\JWTAuth\Providers\Storage\Illuminate::class,
+
+    ],
 6. routes/api.php
 
 Route::post('register', 'AuthController@register');
